@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.noam.repos.model.RepositoriesRepository
 import com.noam.repos.model.TimeFrame
 import com.noam.repos.model.domain.RemoteRepository
+import com.noam.repos.ui.screens.RepositoriesUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,10 +15,14 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
     private val _repositories = MutableStateFlow<List<RemoteRepository>>(emptyList())
     val repositories: StateFlow<List<RemoteRepository>> get() = _repositories
 
+    private val _uiState = MutableStateFlow<RepositoriesUiState>(RepositoriesUiState.Loading)
+    val uiState: StateFlow<RepositoriesUiState> get() = _uiState
+
     fun fetchRepositories(timeframe: TimeFrame = TimeFrame.LastDay) {
         viewModelScope.launch {
             repository.fetchRepositories(timeframe).onSuccess { fetchedRepositories ->
                 _repositories.value = fetchedRepositories
+                _uiState.value = RepositoriesUiState.Success(fetchedRepositories)
             }.onFailure {
             }
         }
