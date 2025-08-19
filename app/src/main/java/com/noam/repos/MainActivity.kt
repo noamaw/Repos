@@ -12,34 +12,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.noam.repos.models.TimeFrame
-import com.noam.repos.network.KtorClient
+import com.noam.repos.model.TimeFrame
 import com.noam.repos.ui.theme.ReposTheme
+import com.noam.repos.viewmodel.RepositoriesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val ktorClient = KtorClient()
         setContent {
             ReposTheme {
-                LaunchedEffect(key1 = ktorClient) {
+                val repositoriesViewModel = koinViewModel<RepositoriesViewModel>()
+                LaunchedEffect(baseContext) {
                     withContext(Dispatchers.IO) {
-                        ktorClient.getRepositories(timeframe = TimeFrame.LastDay).onSuccess {
-                            println("Repositories fetched successfully: $it")
-                        }.onFailure {
-                            println("Error fetching repositories: ${it.message}")
-                        }
+                        repositoriesViewModel.fetchRepositories(timeframe = TimeFrame.LastWeek)
 
-                        delay(2000)
-                        ktorClient.getNextPage().onSuccess {
-                            println("Next page fetched successfully: $it")
-                        }.onFailure {
-                            println("Error fetching next page: ${it.message}")
-                        }
+                        delay(3000)
+
+                        repositoriesViewModel.fetchNextPage()
                     }
                 }
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

@@ -1,4 +1,4 @@
-package com.noam.repos.models.domain
+package com.noam.repos.model.domain
 
 import kotlinx.serialization.Serializable
 

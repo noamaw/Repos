@@ -1,17 +1,18 @@
 package com.noam.repos.network
 
-import com.noam.repos.models.TimeFrame
-import com.noam.repos.models.domain.RemoteRepository
-import com.noam.repos.models.domain.RepositoriesResponse
+import com.noam.repos.model.TimeFrame
+import com.noam.repos.model.domain.RemoteRepository
+import com.noam.repos.model.domain.RepositoriesResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import java.time.LocalDate
@@ -20,8 +21,12 @@ import io.ktor.http.parseHeaderValue
 
 
 class KtorClient {
-    private val client = HttpClient(OkHttp) {
-        defaultRequest { url("https://api.github.com/search/") }
+    private val client = HttpClient(CIO) {
+
+        defaultRequest {
+            url("https://api.github.com/search/")
+            header("Accept", "application/json")
+        }
 
         install(Logging) {
             logger = Logger.SIMPLE
@@ -47,7 +52,7 @@ class KtorClient {
             }
         )
         return safeApiCall {
-            var response = client.get("repositories?") {
+            val response = client.get("repositories?") {
                 url {
                     parameters.apply {
                         append("q", "created:>=$createdBy")
@@ -56,10 +61,9 @@ class KtorClient {
                     }
                 }
             }
-            var nextPageCachelink = response.headers["Link"]
-            var nextLink = parseHeaderValue(nextPageCachelink)
-            nextPageCache = nextLink.find { it -> it.params.first().value == "next" }?.value ?: ""
-            println("Next Page Cache Link: $nextPageCache")
+
+            response.headers["Link"]?.let { updateNextPageCache(it) }
+
             response.body<RepositoriesResponse>().items
         }
     }
@@ -68,14 +72,16 @@ class KtorClient {
         return safeApiCall {
             val response = client.get(nextPageCache.removePrefix("<").removeSuffix(">"))
 
-            var nextPageCachelink = response.headers["Link"]
-            var nextLink = parseHeaderValue(nextPageCachelink)
-            nextPageCache = nextLink.find { it -> it.params.first().value == "next" }?.value ?: ""
-            println("Getting next page - Next Page Cache Link: $nextPageCache")
-
+            response.headers["Link"]?.let { updateNextPageCache(it) }
 
             response.body<RepositoriesResponse>().items
         }
+    }
+
+    private fun updateNextPageCache(nextPageCachelink: String) {
+        val nextLink = parseHeaderValue(nextPageCachelink)
+        nextPageCache = nextLink.find { it -> it.params.first().value == "next" }?.value ?: ""
+        println("Updating next Page Cache Link: $nextPageCache")
     }
 
     private fun get1DayAgo(): LocalDate {

@@ -1,4 +1,4 @@
-package com.noam.repos.models
+package com.noam.repos.model
 
 enum class TimeFrame {
     LastDay,
