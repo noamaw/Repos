@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 class RepositoriesViewModel(private val repository: RepositoriesRepository): ViewModel() {
 
     private val _repositories = MutableStateFlow<List<RemoteRepository>>(emptyList())
-    val repositories: StateFlow<List<RemoteRepository>> get() = _repositories
 
     private val _uiState = MutableStateFlow<RepositoriesUiState>(RepositoriesUiState.Loading)
     val uiState: StateFlow<RepositoriesUiState> get() = _uiState
@@ -22,7 +21,7 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
         viewModelScope.launch {
             repository.fetchRepositories(timeframe).onSuccess { fetchedRepositories ->
                 _repositories.value = fetchedRepositories
-                _uiState.value = RepositoriesUiState.Success(fetchedRepositories)
+                _uiState.value = RepositoriesUiState.Success(_repositories.value)
             }.onFailure {
             }
         }
@@ -32,6 +31,7 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
         viewModelScope.launch {
             repository.fetchRepositories().onSuccess { fetchedRepositories ->
                 _repositories.value += fetchedRepositories
+                _uiState.value = RepositoriesUiState.Success(_repositories.value)
             }.onFailure {
             }
         }
