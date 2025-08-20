@@ -35,10 +35,10 @@ fun HeaderRowComponent(width: Dp = 150.dp) {
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .background(color = Color.Black)
+            .background(color = MaterialTheme.colorScheme.surface)
             .border(
                 width = 2.dp,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.medium
             ),
         verticalAlignment = Alignment.CenterVertically) {
@@ -49,14 +49,14 @@ fun HeaderRowComponent(width: Dp = 150.dp) {
                     .width(width)
                     .padding(8.dp),
                 fontSize = 18.sp,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurface,
                 textDecoration = TextDecoration.Underline,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             )
             if (index < TableHeaders.size - 1) {
                 VerticalSpacerWithLine(
-                    lineColor = Color.White
+                    lineColor = MaterialTheme.colorScheme.primary
                 )
             }
         }

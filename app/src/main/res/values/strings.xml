@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Repos</string>
+    <string name="welcome">Welcome to the Repos App</string>
+    <string name="intro_message">Choose the timeframe you will like to search</string>
+    <string name="welcome_screen_image">welcome screen image</string>
+    <string name="last_month">Last Month</string>
+    <string name="last_week">Last_Week</string>
+    <string name="last_day">Last Day</string>
+    <string name="image_git">https://cdn.creazilla.com/icons/7914417/github-icon-lg.png</string>
 </resources>
