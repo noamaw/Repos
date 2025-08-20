@@ -18,25 +18,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
-import com.noam.repos.model.domain.RemoteRepository
+import com.noam.repos.model.domain.GitRepository
 import com.noam.repos.ui.components.DataText
 import com.noam.repos.ui.components.DataTextComponent
 import com.noam.repos.ui.components.ImagePlaceHolder
 import com.noam.repos.ui.components.LoadingState
 import com.noam.repos.ui.components.PrimaryButton
 import com.noam.repos.ui.components.SimpleToolbar
+import com.noam.repos.viewmodel.FavoriteRepositoriesViewModel
 import com.noam.repos.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
 data class RepoDetailsUiState(
-    val repo: RemoteRepository,
+    val repo: GitRepository,
     val repoDataTexts: List<DataText>
 )
 
 @Composable
 fun RepoDetailsScreen(
     viewModel: RepositoriesViewModel = koinViewModel(),
-    onAddToFavoritesClicked: (RemoteRepository) -> Unit,
+    favoriteRepositoriesViewModel: FavoriteRepositoriesViewModel = koinViewModel(),
     onBackClicked: () -> Unit
 ) {
 
@@ -87,7 +88,7 @@ fun RepoDetailsScreen(
                 // Button
                 item {
                     PrimaryButton("Add to favorites") {
-                        onAddToFavoritesClicked(repoDetailsViewState.repo)
+                        favoriteRepositoriesViewModel.addToFavorites(repoDetailsViewState.repo)
                     }
                 }
                 item { Spacer(modifier = Modifier.height(64.dp)) }

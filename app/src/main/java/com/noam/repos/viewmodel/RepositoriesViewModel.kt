@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.noam.repos.model.RepositoriesRepository
 import com.noam.repos.model.TimeFrame
-import com.noam.repos.model.domain.RemoteRepository
+import com.noam.repos.model.domain.GitRepository
 import com.noam.repos.ui.components.DataText
 import com.noam.repos.ui.screens.RepoDetailsUiState
 import com.noam.repos.ui.screens.RepositoriesUiState
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class RepositoriesViewModel(private val repository: RepositoriesRepository): ViewModel() {
 
-    private val _repositories = MutableStateFlow<List<RemoteRepository>>(emptyList())
+    private val _repositories = MutableStateFlow<List<GitRepository>>(emptyList())
 
     private val _uiState = MutableStateFlow<RepositoriesUiState>(RepositoriesUiState.Loading)
     val uiState: StateFlow<RepositoriesUiState> get() = _uiState
@@ -44,8 +44,8 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
         }
     }
 
-    fun onClickedRepository(remoteRepository: RemoteRepository) {
-        repository.clickedRepository(remoteRepository)
+    fun onClickedRepository(gitRepository: GitRepository) {
+        repository.clickedRepository(gitRepository)
     }
 
     fun getActiveRepoDetailsUiState(): RepoDetailsUiState {
@@ -69,7 +69,7 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
         return repositoryDetailsUiState
     }
 
-    fun addToFavorites(repo: RemoteRepository) {
+    fun addToFavorites(repo: GitRepository) {
 
     }
 }

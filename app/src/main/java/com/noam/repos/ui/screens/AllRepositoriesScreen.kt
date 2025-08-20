@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.noam.repos.model.TimeFrame
-import com.noam.repos.model.domain.RemoteRepository
+import com.noam.repos.model.domain.GitRepository
 import com.noam.repos.ui.components.HeaderRowComponent
 import com.noam.repos.ui.components.LoadingState
 import com.noam.repos.ui.components.RepositoryRowComponent
@@ -139,5 +139,5 @@ private fun Header(seasonName: String, uniqueCharacterCount: Int) {
 sealed interface RepositoriesUiState {
     object Error : RepositoriesUiState
     object Loading : RepositoriesUiState
-    data class Success(val data: List<RemoteRepository>) : RepositoriesUiState
+    data class Success(val data: List<GitRepository>) : RepositoriesUiState
 }

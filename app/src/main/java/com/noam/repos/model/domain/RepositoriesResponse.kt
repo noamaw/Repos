@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class RepositoriesResponse(
     val total_count: Int,
     val incomplete_results: Boolean,
-    val items: List<RemoteRepository>
+    val items: List<GitRepository>
 )

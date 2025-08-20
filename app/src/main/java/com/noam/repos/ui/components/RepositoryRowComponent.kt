@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
-import com.noam.repos.model.domain.RemoteOwner
-import com.noam.repos.model.domain.RemoteRepository
+import com.noam.repos.model.domain.Owner
+import com.noam.repos.model.domain.GitRepository
 
 @Composable
-fun RepositoryRowComponent(repository: RemoteRepository,
+fun RepositoryRowComponent(repository: GitRepository,
                            width : Dp = 150.dp,
-                           onRowClick: (RemoteRepository) -> Unit = {}) {
+                           onRowClick: (GitRepository) -> Unit = {}) {
     val cellModifier = Modifier.width(width).padding(top = 5.dp, bottom = 5.dp, start = 2.dp, end = 2.dp)
     Row(
         modifier = Modifier
@@ -98,10 +98,10 @@ fun RepositoryRowComponent(repository: RemoteRepository,
 @Preview
 @Composable
 private fun RepositoryRowComponentPreview() {
-    val repository = RemoteRepository(
+    val repository = GitRepository(
         id = 28,
         name = "The Repos Mixup",
-        owner = RemoteOwner(
+        owner = Owner(
             id = 1,
             login = "Noam fdalh vjah",
             avatar_url = "https://avatars.githubusercontent.com/u/1?v=4"

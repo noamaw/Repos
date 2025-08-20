@@ -51,13 +51,13 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = Screens.RepoDetailsScreen.route) {
                         RepoDetailsScreen(
-                            onAddToFavoritesClicked = { repo ->
-                                repositoriesViewModel.addToFavorites(repo)
-                            },
                             onBackClicked = {
                                 navController.navigate(Screens.ReposMainScreen.route + "/${TimeFrame.Unknown.name}")
                             }
                         )
+                    }
+                    composable(route = Screens.ReposFavoritesScreen.route) {
+
                     }
                 }
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

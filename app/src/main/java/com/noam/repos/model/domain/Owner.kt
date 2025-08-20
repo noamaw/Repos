@@ -3,14 +3,14 @@ package com.noam.repos.model.domain
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RemoteOwner(
+data class Owner(
     val login: String,
     val id: Int,
     val avatar_url: String,
 ) {
     companion object {
-        fun empty(): RemoteOwner {
-            return RemoteOwner(
+        fun empty(): Owner {
+            return Owner(
                 login = "",
                 id = 0,
                 avatar_url = ""

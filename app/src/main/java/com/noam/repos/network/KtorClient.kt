@@ -1,7 +1,7 @@
 package com.noam.repos.network
 
 import com.noam.repos.model.TimeFrame
-import com.noam.repos.model.domain.RemoteRepository
+import com.noam.repos.model.domain.GitRepository
 import com.noam.repos.model.domain.RepositoriesResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -43,7 +43,7 @@ class KtorClient {
 
     private var nextPageCache = ""
 
-    suspend fun getRepositories(timeframe: TimeFrame) : ApiOperation<List<RemoteRepository>> {
+    suspend fun getRepositories(timeframe: TimeFrame) : ApiOperation<List<GitRepository>> {
         val createdBy = formatToIso8601(
             when (timeframe) {
                 TimeFrame.LastDay -> get1DayAgo()
@@ -69,7 +69,7 @@ class KtorClient {
         }
     }
 
-    suspend fun getNextPage(): ApiOperation<List<RemoteRepository>> {
+    suspend fun getNextPage(): ApiOperation<List<GitRepository>> {
         return safeApiCall {
             val response = client.get(nextPageCache.removePrefix("<").removeSuffix(">"))
 
