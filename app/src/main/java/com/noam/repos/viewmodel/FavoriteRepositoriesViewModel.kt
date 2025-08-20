@@ -30,7 +30,7 @@ class FavoriteRepositoriesViewModel(private val repository: FavoriteRepositories
     fun removeFromFavorites(gitRepository: GitRepository) {
         viewModelScope.launch {
             repository.removeFromFavorites(gitRepository)
-            delay(2000)
+            delay(1000)
             fetchFavoriteRepositories()
         }
     }

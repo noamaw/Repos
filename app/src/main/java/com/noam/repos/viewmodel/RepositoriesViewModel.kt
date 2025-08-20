@@ -8,6 +8,7 @@ import com.noam.repos.model.domain.GitRepository
 import com.noam.repos.ui.components.DataText
 import com.noam.repos.ui.screens.RepoDetailsUiState
 import com.noam.repos.ui.screens.RepositoriesUiState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -56,7 +57,6 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
             }
             add(DataText("Forks", remoteRepository.forks.toString()))
             add(DataText("Created at", remoteRepository.created_at))
-            add(DataText("Link", remoteRepository.html_url))
         }
         val repositoryDetailsUiState = RepoDetailsUiState(
             repo = remoteRepository,
@@ -68,8 +68,11 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
 
     fun toggleFavorite(repo: GitRepository) {
         viewModelScope.launch {
+            println("Toggling favorite for repository: ${repo.name}, current state: ${repo.isFavorite}")
             repository.toggleFavorite(repo)
-            fetchRepositories(usedTimeFrame)
+
+            _repositories.value = repository.combineReposWithFavorites(_repositories.value)
+            _uiState.value = RepositoriesUiState.Success(_repositories.value)
         }
     }
 }

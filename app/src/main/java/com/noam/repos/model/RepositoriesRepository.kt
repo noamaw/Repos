@@ -9,4 +9,5 @@ interface RepositoriesRepository{
     fun clickedRepository(gitRepository: GitRepository)
     fun getClickedRepository() : GitRepository
     suspend fun toggleFavorite(repo: GitRepository)
+    suspend fun combineReposWithFavorites(currentListOfRepos: List<GitRepository>): List<GitRepository>
 }

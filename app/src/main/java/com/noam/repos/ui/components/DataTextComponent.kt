@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -14,7 +16,7 @@ data class DataText(
 )
 
 @Composable
-fun DataTextComponent(dataText: DataText) {
+fun DataTextComponent(dataText: DataText, modifier: Modifier = Modifier) {
     Column {
         Text(
             text = dataText.title,
@@ -23,9 +25,10 @@ fun DataTextComponent(dataText: DataText) {
             color = MaterialTheme.colorScheme.primary
         )
         Text(
+            modifier = modifier,
             text = dataText.text,
             fontSize = 18.sp,
-            color = MaterialTheme.colorScheme.secondary
+            color = if (dataText.title == "Link") Color.Companion.Blue else MaterialTheme.colorScheme.secondary
         )
     }
 }

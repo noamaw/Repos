@@ -52,4 +52,15 @@ class RepositoriesRepositoryImpl(private val ktorClient: KtorClient, private val
             favoriteRepositoriesRepository.addToFavorites(repo)
         }
     }
+
+    override suspend fun combineReposWithFavorites(currentListOfRepos: List<GitRepository>): List<GitRepository> {
+        val favorites = getFavoriteRepositories()
+        return currentListOfRepos.map { repository ->
+            if (favorites.any { it.id == repository.id }) {
+                repository.copy(isFavorite = true)
+            } else {
+                repository
+            }
+        }
+    }
 }

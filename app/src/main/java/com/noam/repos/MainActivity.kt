@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,9 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.noam.repos.model.TimeFrame
-import com.noam.repos.ui.screens.FavoriteReposScreen
-import com.noam.repos.ui.screens.RepoDetailsScreen
-import com.noam.repos.ui.screens.RepositoriesScreen
+import com.noam.repos.ui.screens.MainScreen
 import com.noam.repos.ui.screens.Screens
 import com.noam.repos.ui.screens.WelcomeScreen
 import com.noam.repos.ui.theme.ReposTheme
@@ -46,28 +42,14 @@ class MainActivity : ComponentActivity() {
                     startDestination = Screens.WelcomeScreen.route
                 ) {
                     composable(route = Screens.WelcomeScreen.route) { WelcomeScreen(navController) }
-                    composable(route = Screens.ReposMainScreen.route + "/{timeFrame}") { backStackEntry ->
-                        val timeFrame = backStackEntry.arguments?.getString("timeFrame")?.let{ TimeFrame.valueOf(it) } ?: TimeFrame.LastDay
-                        RepositoriesScreen(navController, timeFrame)
-                    }
-                    composable(route = Screens.RepoDetailsScreen.route) {
-                        RepoDetailsScreen(
-                            onBackClicked = {
-                                navController.popBackStack()
-                            }
-                        )
-                    }
-                    composable(route = Screens.ReposFavoritesScreen.route) {
-                        FavoriteReposScreen(
-                            onBackClicked = {
-                                navController.popBackStack()
-                            }
+                    composable(route = Screens.MainScreen.route + "/{timeFrame}") { backStackEntry ->
+                        val timeFrame = backStackEntry.arguments?.getString("timeFrame")
+                            ?.let { TimeFrame.valueOf(it) } ?: TimeFrame.LastDay
+                        MainScreen(
+                            timeFrame = timeFrame,
                         )
                     }
                 }
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    RepositoriesScreen(innerPadding)
-//                }
             }
         }
     }

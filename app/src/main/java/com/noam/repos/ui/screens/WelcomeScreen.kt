@@ -81,21 +81,24 @@ fun WelcomeScreen(navController: NavHostController) {
                 PrimaryButton(
                     text = stringResource(R.string.last_month),
                     onClickEvent = {
-                        navController.navigate(Screens.ReposMainScreen.route + "/" + TimeFrame.LastMonth.name)
+                        navController.navigate(Screens.MainScreen.route + "/" + TimeFrame.LastMonth.name)
+//                        navController.navigate(Screens.ReposMainScreen.route + "/" + TimeFrame.LastMonth.name)
                     }
                 )
 
                 PrimaryButton(
                     text = stringResource(R.string.last_week),
                     onClickEvent = {
-                        navController.navigate(Screens.ReposMainScreen.route + "/" + TimeFrame.LastWeek.name)
+                        navController.navigate(Screens.MainScreen.route + "/" + TimeFrame.LastWeek.name)
+//                        navController.navigate(Screens.ReposMainScreen.route + "/" + TimeFrame.LastWeek.name)
                     }
                 )
 
                 PrimaryButton(
                     text = stringResource(R.string.last_day),
                     onClickEvent = {
-                        navController.navigate(Screens.ReposMainScreen.route + "/" + TimeFrame.LastDay.name)
+                        navController.navigate(Screens.MainScreen.route + "/" + TimeFrame.LastDay.name)
+//                        navController.navigate(Screens.ReposMainScreen.route + "/" + TimeFrame.LastDay.name)
                     }
                 )
             }
