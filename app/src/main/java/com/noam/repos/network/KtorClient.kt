@@ -49,7 +49,6 @@ class KtorClient {
                 TimeFrame.LastDay -> get1DayAgo()
                 TimeFrame.LastWeek -> get1WeekAgo()
                 TimeFrame.LastMonth -> get1MonthAgo()
-                TimeFrame.Unknown -> get1MonthAgo()
             }
         )
         return safeApiCall {

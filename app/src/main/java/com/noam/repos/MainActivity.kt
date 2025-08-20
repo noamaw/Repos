@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.noam.repos.model.TimeFrame
+import com.noam.repos.ui.screens.FavoriteReposScreen
 import com.noam.repos.ui.screens.RepoDetailsScreen
 import com.noam.repos.ui.screens.RepositoriesScreen
 import com.noam.repos.ui.screens.Screens
@@ -46,18 +47,22 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable(route = Screens.WelcomeScreen.route) { WelcomeScreen(navController) }
                     composable(route = Screens.ReposMainScreen.route + "/{timeFrame}") { backStackEntry ->
-                        val timeFrame = backStackEntry.arguments?.getString("timeFrame")?.let{ TimeFrame.valueOf(it) } ?: TimeFrame.Unknown
+                        val timeFrame = backStackEntry.arguments?.getString("timeFrame")?.let{ TimeFrame.valueOf(it) } ?: TimeFrame.LastDay
                         RepositoriesScreen(navController, timeFrame)
                     }
                     composable(route = Screens.RepoDetailsScreen.route) {
                         RepoDetailsScreen(
                             onBackClicked = {
-                                navController.navigate(Screens.ReposMainScreen.route + "/${TimeFrame.Unknown.name}")
+                                navController.popBackStack()
                             }
                         )
                     }
                     composable(route = Screens.ReposFavoritesScreen.route) {
-
+                        FavoriteReposScreen(
+                            onBackClicked = {
+                                navController.popBackStack()
+                            }
+                        )
                     }
                 }
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

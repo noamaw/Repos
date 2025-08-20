@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 val TableHeaders = listOf(
+    "Fav",
     "Username",
     "Repository Name",
     "User Avatar",
@@ -46,7 +47,7 @@ fun HeaderRowComponent(width: Dp = 150.dp) {
             Text(
                 text = header,
                 modifier = Modifier
-                    .width(width)
+                    .width(if (header == "Fav") 50.dp else width)
                     .padding(8.dp),
                 fontSize = 18.sp,
                 color = MaterialTheme.colorScheme.onSurface,

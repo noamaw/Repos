@@ -100,6 +100,10 @@ fun RepositoriesScreen(
                                     navController.navigate(
                                         Screens.RepoDetailsScreen.route
                                     )
+                                },
+                                onFavClick = { repo ->
+                                    Log.d("RepositoriesScreen", "Toggling favorite for: ${repo.name}")
+                                    repositoriesViewModel.toggleFavorite(repo)
                                 }
                             )
                         }
@@ -107,32 +111,6 @@ fun RepositoriesScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun Header(seasonName: String, uniqueCharacterCount: Int) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = ReposPrimary)
-    ) {
-        Text(text = seasonName, color = Color.White, fontSize = 32.sp)
-        Text(
-            text = "$uniqueCharacterCount unique characters",
-            color = Color.White,
-            fontSize = 22.sp
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp)
-                .height(4.dp)
-                .background(
-                    color = ReposAction,
-                    shape = RoundedCornerShape(2.dp)
-                )
-        )
     }
 }
 

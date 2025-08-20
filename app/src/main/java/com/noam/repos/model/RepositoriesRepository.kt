@@ -8,4 +8,5 @@ interface RepositoriesRepository{
     suspend fun fetchNextPageOfRepositories(): ApiOperation<List<GitRepository>>
     fun clickedRepository(gitRepository: GitRepository)
     fun getClickedRepository() : GitRepository
+    suspend fun toggleFavorite(repo: GitRepository)
 }

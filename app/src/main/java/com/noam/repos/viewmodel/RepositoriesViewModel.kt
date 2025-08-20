@@ -19,12 +19,9 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
     private val _uiState = MutableStateFlow<RepositoriesUiState>(RepositoriesUiState.Loading)
     val uiState: StateFlow<RepositoriesUiState> get() = _uiState
 
+    private var usedTimeFrame: TimeFrame = TimeFrame.LastDay
     fun fetchRepositories(timeframe: TimeFrame = TimeFrame.LastDay) {
-        if (timeframe == TimeFrame.Unknown && _repositories.value.isNotEmpty()) {
-            println("Using cached repositories")
-            _uiState.value = RepositoriesUiState.Success(_repositories.value)
-            return
-        }
+        usedTimeFrame = timeframe
         viewModelScope.launch {
             repository.fetchRepositories(timeframe).onSuccess { fetchedRepositories ->
                 _repositories.value = fetchedRepositories
@@ -69,7 +66,10 @@ class RepositoriesViewModel(private val repository: RepositoriesRepository): Vie
         return repositoryDetailsUiState
     }
 
-    fun addToFavorites(repo: GitRepository) {
-
+    fun toggleFavorite(repo: GitRepository) {
+        viewModelScope.launch {
+            repository.toggleFavorite(repo)
+            fetchRepositories(usedTimeFrame)
+        }
     }
 }

@@ -19,7 +19,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     single { KtorClient() }
-    single { RepositoriesRepositoryImpl(get()) } bind RepositoriesRepository::class
+    single { RepositoriesRepositoryImpl(get(), get()) } bind RepositoriesRepository::class
     viewModel { RepositoriesViewModel(get()) }
 
     single { FavoriteRepositoriesRepositoryImpl(get()) } bind FavoriteRepositoriesRepository::class

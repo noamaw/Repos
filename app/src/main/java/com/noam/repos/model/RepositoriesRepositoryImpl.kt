@@ -4,14 +4,28 @@ import com.noam.repos.model.domain.GitRepository
 import com.noam.repos.network.ApiOperation
 import com.noam.repos.network.KtorClient
 
-class RepositoriesRepositoryImpl(private val ktorClient: KtorClient): RepositoriesRepository {
+class RepositoriesRepositoryImpl(private val ktorClient: KtorClient, private val favoriteRepositoriesRepository: FavoriteRepositoriesRepository): RepositoriesRepository {
+    suspend fun getFavoriteRepositories(): List<GitRepository> {
+        return favoriteRepositoriesRepository.getFavoriteRepositories()
+    }
+
     override suspend fun fetchRepositories(
         timeframe: TimeFrame
     ): ApiOperation<List<GitRepository>> {
-        return ktorClient.getRepositories(timeframe).onSuccess {
+        val result = ktorClient.getRepositories(timeframe).onSuccess {
             println("Fetched repositories: $it")
         }.onFailure {
             println("Error fetching repositories: ${it.message}")
+        }
+        val favorites = getFavoriteRepositories()
+        return result.mapSuccess { repositories ->
+            repositories.map { repository ->
+                if (favorites.any { it.id == repository.id }) {
+                    repository.copy(isFavorite = true)
+                } else {
+                    repository
+                }
+            }
         }
     }
 
@@ -30,4 +44,12 @@ class RepositoriesRepositoryImpl(private val ktorClient: KtorClient): Repositori
     }
 
     override fun getClickedRepository(): GitRepository = clickedRepository
+
+    override suspend fun toggleFavorite(repo: GitRepository) {
+        if (repo.isFavorite) {
+            favoriteRepositoriesRepository.removeFromFavorites(repo)
+        } else {
+            favoriteRepositoriesRepository.addToFavorites(repo)
+        }
+    }
 }

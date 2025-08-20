@@ -18,7 +18,7 @@ data class GitRepository(
     val language: String? = null,
     val forks: Int,
     val created_at: String,
-    val favorite: Boolean = false
+    val isFavorite: Boolean = false
 ) {
     companion object {
         fun empty(): GitRepository {

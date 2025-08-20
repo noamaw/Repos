@@ -11,12 +11,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -29,7 +34,8 @@ import com.noam.repos.model.domain.GitRepository
 @Composable
 fun RepositoryRowComponent(repository: GitRepository,
                            width : Dp = 150.dp,
-                           onRowClick: (GitRepository) -> Unit = {}) {
+                           onRowClick: (GitRepository) -> Unit = {},
+                           onFavClick: (GitRepository) -> Unit = {}) {
     val cellModifier = Modifier.width(width).padding(top = 5.dp, bottom = 5.dp, start = 2.dp, end = 2.dp)
     Row(
         modifier = Modifier
@@ -44,6 +50,18 @@ fun RepositoryRowComponent(repository: GitRepository,
                 shape = MaterialTheme.shapes.medium
             ),
         verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = if (repository.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+            contentDescription = "Favorite Icon",
+            modifier = Modifier
+                .width(50.dp)
+                .padding(top = 5.dp, bottom = 5.dp, start = 2.dp, end = 2.dp)
+                .clickable {
+                onFavClick(repository)
+            },
+            tint = if (repository.isFavorite) Color.Red else MaterialTheme.colorScheme.onBackground
+        )
+        VerticalSpacerWithLine(lineColor = MaterialTheme.colorScheme.primary)
         Text(
             text = repository.owner.login,
             modifier = cellModifier,
