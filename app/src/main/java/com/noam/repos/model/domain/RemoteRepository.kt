@@ -14,5 +14,22 @@ data class RemoteRepository(
     val language: String? = null,
     val forks: Int,
     val created_at: String,
-)
+) {
+    companion object {
+        fun empty(): RemoteRepository {
+            return RemoteRepository(
+                id = 0,
+                name = "",
+                private = false,
+                owner = RemoteOwner.empty(),
+                html_url = "",
+                description = null,
+                stargazers_count = 0,
+                language = null,
+                forks = 0,
+                created_at = ""
+            )
+        }
+    }
+}
 

@@ -1,6 +1,7 @@
 package com.noam.repos.ui.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -27,12 +28,16 @@ import com.noam.repos.model.domain.RemoteRepository
 
 @Composable
 fun RepositoryRowComponent(repository: RemoteRepository,
-                           width : Dp = 150.dp) {
+                           width : Dp = 150.dp,
+                           onRowClick: (RemoteRepository) -> Unit = {}) {
     val cellModifier = Modifier.width(width).padding(top = 5.dp, bottom = 5.dp, start = 2.dp, end = 2.dp)
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
+            .clickable {
+                onRowClick(repository)
+            }
             .border(
                 width = 2.dp,
                 color = MaterialTheme.colorScheme.primary,

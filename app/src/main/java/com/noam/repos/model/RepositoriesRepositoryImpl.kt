@@ -22,4 +22,12 @@ class RepositoriesRepositoryImpl(private val ktorClient: KtorClient): Repositori
             println("Error fetching next page of repositories: ${it.message}")
         }
     }
+
+    private var clickedRepository: RemoteRepository = RemoteRepository.empty()
+
+    override fun clickedRepository(remoteRepository: RemoteRepository) {
+        clickedRepository = remoteRepository
+    }
+
+    override fun getClickedRepository(): RemoteRepository = clickedRepository
 }

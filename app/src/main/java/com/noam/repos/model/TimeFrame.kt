@@ -4,4 +4,5 @@ enum class TimeFrame {
     LastDay,
     LastWeek,
     LastMonth,
+    Unknown
 }

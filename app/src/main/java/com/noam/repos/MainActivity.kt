@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.noam.repos.model.TimeFrame
+import com.noam.repos.ui.screens.RepoDetailsScreen
 import com.noam.repos.ui.screens.RepositoriesScreen
 import com.noam.repos.ui.screens.Screens
 import com.noam.repos.ui.screens.WelcomeScreen
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
                 val repositoriesViewModel = koinViewModel<RepositoriesViewModel>()
                 LaunchedEffect(baseContext) {
                     withContext(Dispatchers.IO) {
-                        repositoriesViewModel.fetchRepositories(timeframe = TimeFrame.LastWeek)
+//                        repositoriesViewModel.fetchRepositories(timeframe = TimeFrame.LastWeek)
                     }
                 }
                 val navController = rememberNavController()
@@ -45,8 +46,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable(route = Screens.WelcomeScreen.route) { WelcomeScreen(navController) }
                     composable(route = Screens.ReposMainScreen.route + "/{timeFrame}") { backStackEntry ->
-                        val timeFrame = backStackEntry.arguments?.getString("timeFrame")?.let{ TimeFrame.valueOf(it) } ?: TimeFrame.LastWeek
+                        val timeFrame = backStackEntry.arguments?.getString("timeFrame")?.let{ TimeFrame.valueOf(it) } ?: TimeFrame.Unknown
                         RepositoriesScreen(navController, timeFrame)
+                    }
+                    composable(route = Screens.RepoDetailsScreen.route) {
+                        RepoDetailsScreen(
+                            onAddToFavoritesClicked = { repo ->
+                                repositoriesViewModel.addToFavorites(repo)
+                            },
+                            onBackClicked = {
+                                navController.navigate(Screens.ReposMainScreen.route + "/${TimeFrame.Unknown.name}")
+                            }
+                        )
                     }
                 }
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

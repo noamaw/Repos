@@ -91,10 +91,16 @@ fun RepositoriesScreen(
                                 width = 150.dp
                             )
                         }
-                        items(state.data.size) {
+                        items(state.data.size) { it ->
                             RepositoryRowComponent(
                                 repository = state.data.elementAt(it),
-                                width = 150.dp
+                                width = 150.dp,
+                                onRowClick = {
+                                    repositoriesViewModel.onClickedRepository(it)
+                                    navController.navigate(
+                                        Screens.RepoDetailsScreen.route
+                                    )
+                                }
                             )
                         }
                     }

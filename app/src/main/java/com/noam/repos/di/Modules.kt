@@ -5,10 +5,11 @@ import com.noam.repos.model.RepositoriesRepositoryImpl
 import com.noam.repos.network.KtorClient
 import com.noam.repos.viewmodel.RepositoriesViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
     single { KtorClient() }
-    factory<RepositoriesRepository> { RepositoriesRepositoryImpl(get()) }
+    single { RepositoriesRepositoryImpl(get()) } bind RepositoriesRepository::class
     viewModel { RepositoriesViewModel(get()) }
 }
